@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class Course extends Model
 {
@@ -32,6 +33,16 @@ class Course extends Model
             'price'  => 'decimal:2',
         ];
     }
+
+    public function scopePublished(Builder $query): Builder
+    {
+    return $query->where('status', CourseStatus::Published);
+     }
+
+   public function scopeDraft(Builder $query): Builder
+   {
+    return $query->where('status', CourseStatus::Draft);
+   }
 
 
     public function teacher(): BelongsTo

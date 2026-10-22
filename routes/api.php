@@ -7,6 +7,9 @@ use App\Http\Controllers\Api\EnrollmentController;
 use App\Http\Controllers\Api\LessonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TeacherDashboardController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ImageController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -40,4 +43,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Delete any comment by its own ID (author or admin)
     Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+
+   Route::get('teacher/dashboard/comments', [ TeacherDashboardController::class, 'latestComments',])->middleware('role:teacher');
+   Route::apiResource('categories', CategoryController::class);
+
+
+
+   // Images
+   Route::get('images/{type}/{id}', [ImageController::class, 'show']);
+   Route::post('images/{type}/{id}', [ImageController::class, 'store']);
+   Route::put('images/{type}/{id}', [ImageController::class, 'update']);
+   Route::delete('images/{type}/{id}', [ImageController::class, 'destroy']);
+
+    
+
 });

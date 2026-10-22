@@ -12,38 +12,35 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-   
-    public function index(Request $request): JsonResponse
-    {
-        $this->authorize('viewAny', Course::class);
+ 
+  public function index(Request $request): JsonResponse
+   {
+    $this->authorize('viewAny', Course::class);
 
-        $user = $request->user();
+    $user = $request->user();
 
-        $courses = Course::with('teacher:id,name')
-            ->when(
-                
-                ! ($user && $user->isAdmin()),
-                function ($query) use ($user) {
-                    if ($user && $user->isTeacher()) {
-                       
-                        $query->where(function ($q) use ($user) {
-                            $q->where('teacher_id', $user->id)
-                              ->orWhere('status', CourseStatus::Published);
-                        });
-                    }
-                     else {
-                        
-                        $query->where('status', CourseStatus::Published);
-                    }
+    $courses = Course::with('teacher:id,name')
+        ->when(
+            ! ($user && $user->isAdmin()),
+            function ($query) use ($user) {
+                if ($user && $user->isTeacher()) {
+                    $query->where(function ($q) use ($user) {
+                        $q->where('teacher_id', $user->id)
+                          ->orWhere(function ($publishedQuery) {
+                              $publishedQuery->published();
+                          });
+                    });
+                } else {
+                    $query->published();
                 }
-            )
-            ->latest()
-            ->paginate(15);
+            }
+        )
+        ->latest()
+        ->paginate(15);
 
-        return response()->json($courses);
-    }
+    return response()->json($courses);
+  }
 
-    
     public function show(Course $course): JsonResponse
     {
         $this->authorize('view', $course);
