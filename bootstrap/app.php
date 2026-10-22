@@ -21,14 +21,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // Return JSON for unauthenticated API requests (Sanctum / auth:sanctum)
+      
         $exceptions->render(function (AuthenticationException $e, Request $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json(['message' => 'Unauthenticated.'], Response::HTTP_UNAUTHORIZED);
             }
         });
 
-        // Return JSON for authorization failures (policy denials) on API requests
+      
         $exceptions->render(function (AuthorizationException $e, Request $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json(['message' => 'This action is unauthorized.'], Response::HTTP_FORBIDDEN);

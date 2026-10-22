@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-
+use App\Rules\VideoUrlRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLessonRequest extends FormRequest
@@ -27,7 +27,7 @@ class StoreLessonRequest extends FormRequest
         return [
             'title'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'video_url'   => ['required', 'string', 'max:2048'],
+            'video_url'   => ['required', 'string', 'max:2048', new VideoUrlRule()],
             'order'       => ['required', 'integer', 'min:1'],
         ];
     }

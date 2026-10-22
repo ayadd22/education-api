@@ -41,9 +41,7 @@ class User extends Authenticatable
 
 
 
-    // -------------------------------------------------------------------------
-    // Role helpers
-    // -------------------------------------------------------------------------
+    
 
     public function isAdmin(): bool
     {
@@ -65,10 +63,7 @@ class User extends Authenticatable
         return $this->role === $role;
     }
 
-    // -------------------------------------------------------------------------
-    // Relationships
-    // -------------------------------------------------------------------------
-
+   
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class, 'teacher_id');

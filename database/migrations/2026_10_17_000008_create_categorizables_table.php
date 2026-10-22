@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('categorizables', function (Blueprint $table) {
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->morphs('categorizable'); // adds categorizable_id + categorizable_type + index
+            $table->morphs('categorizable');
             $table->timestamps();
 
-            // Prevent assigning the same category to the same content item twice
-            $table->unique(['category_id', 'categorizable_id', 'categorizable_type']);
+
+          $table->unique( ['category_id', 'categorizable_id', 'categorizable_type'],  'cat_content_unique');
         });
     }
 

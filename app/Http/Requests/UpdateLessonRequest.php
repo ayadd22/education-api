@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\VideoUrlRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLessonRequest extends FormRequest
@@ -20,7 +21,7 @@ class UpdateLessonRequest extends FormRequest
         return [
             'title'       => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string'],
-            'video_url'   => ['sometimes', 'required', 'string', 'max:2048'],
+            'video_url'   => ['sometimes', 'required', 'string', 'max:2048', new VideoUrlRule()],
             'order'       => ['sometimes', 'required', 'integer', 'min:1'],
         ];
     }

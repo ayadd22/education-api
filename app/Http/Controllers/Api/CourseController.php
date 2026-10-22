@@ -30,7 +30,8 @@ class CourseController extends Controller
                             $q->where('teacher_id', $user->id)
                               ->orWhere('status', CourseStatus::Published);
                         });
-                    } else {
+                    }
+                     else {
                         
                         $query->where('status', CourseStatus::Published);
                     }
